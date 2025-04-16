@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: lawza
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/lawza
+      JWT_SECRET: changethisinprod
+      OPENAI_API_KEY: sk-...
+      SMTP_HOST: smtp.example.com
+      SMTP_PORT: 587
+      SMTP_USER: you@email.com
+      SMTP_PASS: yourpass
+    depends_on:
+      - db
+volumes:
+  dbdata:
